@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAP Pricing Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        select, input[type="text"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 150px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #00BCD4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #ppc {
+            font-size: large;
+            font-weight: 600;
+            max-width: 400px;
+        }
+
+    </style>
+</head>
+<body>
+<form id="diamondForm">
+    <div class="container">
+        <h2>Diamond Pricing Form</h2>
+        
+        <div class="row">
+            <label for="certi">CERTI :</label>
+            <select id="certi" name="certi">
+                {% for value in certi_values %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="shape">SHAPE :</label>
+            <select id="shape" name="shape">
+                {% for value in shape_values %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="carat">CARAT :</label>
+            <input type="text" id="carat" name="carat" placeholder="0.000">
+        </div>
+
+        <div class="row">
+            <label for="color">COLOR :</label>
+            <select id="color" name="color">
+                {% for value in color_values %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="clarity">CLARITY :</label>
+            <select id="clarity" name="clarity">
+                {% for value in clarity_values %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="cut">CUT :</label>
+            <select id="cut" name="cut">
+                {% for value in cut_values %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="flr">FLR :</label>
+            <select id="flr" name="flr">
+                {% for value in flr_values %}
+                <option value="{{ value }}">{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <label for="roughcarat">ROUGH CARAT :</label>
+            <input type="text" id="roughcarat" name="roughcarat" placeholder="0.000">
+        </div>
+
+        <div class="row">
+            <label>PPC :</label>
+            <input type="text" name="ppc" id="ppc" value="$0000 / -00 / Value: $0000" disabled>
+        </div>
+
+        <div class="row">
+            <button type="button" onclick="submitForm(event)">SUBMIT</button>
+            <button type="reset">RESET</button>
+        </div>
+    </div>
+</form>
+
+<script>
+    function submitForm(event) {
+        // Prevent default form submission
+        event.preventDefault();
+
+        const form = document.getElementById('diamondForm');
+
+        if (!form) {
+            console.error('Form not found!');
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        fetch('/submit-data', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('ppc').value = data.ppc;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong. Check the console for more details.');
+        });
+    }
+</script>
+
+</body>
+</html>
