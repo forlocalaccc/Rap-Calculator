@@ -57,10 +57,10 @@ def submit_data():
         price = round((rap - ((rap*back)/100))*carat)
 
         if ro_carat == '':
-            data  = f'${rap} / -{back}% / Value: ${price}'
+            data  = f'${rap}  |  -{back}%  |  Value: ${price}'
         else:
             ro_price = round(price/ro_carat)
-            data  = f'${rap} / -{back}% / Value: ${price} / Ro: ${ro_price}'
+            data  = f'${rap}  |  -{back}%  |  Value: ${price}  |  Ro: ${ro_price}'
 
 
         return jsonify({'ppc': data})
