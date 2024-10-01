@@ -59,7 +59,7 @@ def submit_data():
         if ro_carat == '':
             data  = f'${rap} / -{back}% / Value: ${price}'
         else:
-            ro_price = price/ro_carat
+            ro_price = round(price/ro_carat)
             data  = f'${rap} / -{back}% / Value: ${price} / Ro: ${ro_price}'
 
 
